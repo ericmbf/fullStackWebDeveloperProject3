@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import psycopg2
 
+OUTPUT1 = '''\
+    "%s" - %s views
+'''
 
 def getMostPopular(limit):
     """
@@ -14,18 +17,30 @@ def getMostPopular(limit):
     # Connect database
     conn = databaseConnect()
 
+    # Ger cursor
+    cursor = conn.cursor()
+    
     #Build query
-
-    #Exec query
+    cursor.execute("""select title, count(*) as views
+                        from articles, log
+                        where path like CONCAT('%', slug)
+                        group by title
+                        order by views desc
+                        limit {};""".format(limit))
+    
+    # Get result
+    result = cursor.fetchall()
 
     # Close database
     conn.close()
 
+    return result
 
 def databaseConnect():
     return psycopg2.connect("dbname=news")
   
 if __name__== "__main__":
-    limit = 5
-    print("The most {} popular articles:\n".format(limit))
-    print(getMostPopular(limit))
+    limit = 3
+    print("The most {} popular articles are:".format(limit))
+    result = "".join(OUTPUT1 % (title, view) for title, view in getMostPopular(limit))
+    print(result)
