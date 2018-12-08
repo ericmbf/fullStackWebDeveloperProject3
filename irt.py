@@ -6,9 +6,11 @@ OUTPUT1 = '''\
 
 OUTPUT2 = '''\
     "%s" - %s errors\n'''
-    
+
+
 def databaseConnect():
     return psycopg2.connect("dbname=news")
+
 
 def getMostPopularArticles(limit):
     """
@@ -16,7 +18,7 @@ def getMostPopularArticles(limit):
     Args:
         limit (int): The number of records.
     Returns:
-        string: The result query from the most popular articles limited by 
+        string: The result query from the most popular articles limited by \
         limit argument.
     """
     # Connect database
@@ -24,15 +26,15 @@ def getMostPopularArticles(limit):
 
     # Ger cursor
     cursor = conn.cursor()
-    
-    #Build query
+
+    # Build query
     cursor.execute("""select title, count(*) as views
                         from articles, log
                         where path like CONCAT('%', slug)
                         group by title
                         order by views desc
                         limit {};""".format(limit))
-    
+
     # Get result
     result = cursor.fetchall()
 
@@ -40,6 +42,7 @@ def getMostPopularArticles(limit):
     conn.close()
 
     return result
+
 
 def getMostPopularAuthors():
     """
@@ -54,7 +57,7 @@ def getMostPopularAuthors():
     # Ger cursor
     cursor = conn.cursor()
 
-    #Build query
+    # Build query
     cursor.execute("""select name, count(*) as views
                         from articles, log, authors
                         where path like CONCAT('%', slug)
@@ -70,15 +73,15 @@ def getMostPopularAuthors():
 
     return result
 
+
 def getDaysWithErrorPerCent(percent):
     """
         Return the most popular author from table news.
     Args:
         percent (float): the percent number limit.
     Returns:
-        string: The result query with days and error per cent from above limit
-        percent. 
-        
+        string: The result query with days and error per cent from above \
+        limit percent.
     """
     # Connect database
     conn = databaseConnect()
@@ -86,12 +89,13 @@ def getDaysWithErrorPerCent(percent):
     # Ger cursor
     cursor = conn.cursor()
 
-    #Build query
-    cursor.execute("""select get_all.date as date, 
-                    ((get_error.req * 100.0) / get_all.req) as error
-                    from get_all, get_error 
-                    where get_all.date = get_error.date and
-                    get_error.req > (get_all.req * {0:.2f});""".format(float(percent)/100))
+    # Build query
+    cursor.execute("""select get_all.date as date, \
+                    ((get_error.req * 100.0) / get_all.req) as error \
+                    from get_all, get_error \
+                    where get_all.date = get_error.date and \
+                    get_error.req > (get_all.req * {0:.2f});\
+                    """.format(float(percent)/100))
 
     # Get result
     result = cursor.fetchall()
@@ -101,17 +105,21 @@ def getDaysWithErrorPerCent(percent):
 
     return result
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
     limit = 3
     print("The most {} popular articles are:".format(limit))
-    result = "".join(OUTPUT1 % (title, view) for title, view in getMostPopularArticles(limit))
+    result = "".join(OUTPUT1 % (title, view)
+                     for title, view in getMostPopularArticles(limit))
     print(result)
 
     print("The most popular authors are:")
-    result = "".join(OUTPUT1 % (name, view) for name, view in getMostPopularAuthors())
+    result = "".join(OUTPUT1 % (name, view)
+                     for name, view in getMostPopularAuthors())
     print(result)
 
     percent = 1
     print("The Days that {}% of requests that are errors:".format(percent))
-    result = "".join(OUTPUT2 % (date, error) for date, error in getDaysWithErrorPerCent(percent))
+    result = "".join(OUTPUT2 % (date, error)
+                     for date, error in getDaysWithErrorPerCent(percent))
     print(result)
