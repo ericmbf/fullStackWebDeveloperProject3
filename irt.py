@@ -2,10 +2,10 @@
 import psycopg2
 
 OUTPUT1 = '''\
-    "%s" - %s views'''
+    "%s" - %s views\n'''
 
 OUTPUT2 = '''\
-    "%s" - %s errors'''
+    "%s" - %s errors\n'''
     
 def databaseConnect():
     return psycopg2.connect("dbname=news")
@@ -112,6 +112,6 @@ if __name__== "__main__":
     print(result)
 
     percent = 1
-    print("The Days that {}% of requests are errors:".format(percent))
+    print("The Days that {}% of requests that are errors:".format(percent))
     result = "".join(OUTPUT2 % (date, error) for date, error in getDaysWithErrorPerCent(percent))
     print(result)
