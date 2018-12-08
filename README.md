@@ -23,12 +23,19 @@ What things you need to install the software and how to install them
 ```
 * Init vagrant using "vagrant up"
 * Do ssh connection with virtual machine using "vagrant ssh"
-* You need exec this query on psql to create the views necessary to program works.
- * "create view get_error as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
-    from log where log.status like '%404%' group by date;"
- * "create view get_all as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
-    from log group by date;"
+* You need exec some querys below on psql to create the views necessary to program works.
 * Exec the irt.py program exec the command line: "python irt.py"
+```
+
+## Views
+```
+    create view get_error as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
+        from log where log.status like '%404%' group by date;
+```
+
+```
+    create view get_all as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
+        from log group by date;"
 ```
 
 ## How to Contribute
