@@ -3,11 +3,11 @@ This repository is used to implement the third project from Udacity Full Stack D
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system. It was used the sql "nwsdata.sql" file to create the database called "news".
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+What things do you need use the program
 
 ```
 1- A good browser
@@ -18,34 +18,35 @@ What things you need to install the software and how to install them
 
 4- Virtualbox
 
+5- Download the vagrant VM with all the files needed to init and enter into VM.
+Using this link to download: https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip
+
 ```
 ## Steps
 ```
-* Init vagrant using "vagrant up"
-* Do ssh connection with virtual machine using "vagrant ssh"
-* You need exec some querys below on psql to create the views necessary to program works.
-* Exec the irt.py program exec the command line: "python irt.py"
+* Open the file above and extract all.
+* Search for the file "Vagrantfile" and open the terminal on directory from file.
+* You need to init the VM using "vagrant up" where the "Vagrantfile" is localized.
+* Do ssh connection with virtual machine using "vagrant ssh" to enter inside the VM after started the VM.
+* Type "psql news" on terminal to open the "news" table on PostgreSQL. 
+* Exec this query:
+ * create view get_error as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
+      from log where log.status like '%404%' group by date;
+ * create view get_all as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
+      from log group by date;"
+* Exec the irt.py after all to using the command line: "python irt.py" and wait some seconds for the result.
 ```
 
 ## Views
 ```
-    create view get_error as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
-        from log where log.status like '%404%' group by date;
-```
-
-```
-    create view get_all as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
-        from log group by date;"
+    get_error
+    get_all
 ```
 
 ## How to Contribute
 
-If would like to contribuite com this code, please fork the repository.
+If would like to contribuite with this code, please fork the repository.
 
 ```sh
 $ git clone https://github.com/ericmbf/project3FullStackDevelopment.git
 ```
-
-## License
-
-The contents of this repository are covered under the [MIT License](LICENSE).
