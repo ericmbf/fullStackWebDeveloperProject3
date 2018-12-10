@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 import psycopg2
 
-OUTPUT1 = '''\
-    "%s" - %s views\n'''
-
-OUTPUT2 = '''\
-    "%s" - %s errors\n'''
-
 
 def databaseConnect():
     return psycopg2.connect("dbname=news")
@@ -109,17 +103,14 @@ def getDaysWithErrorPerCent(percent):
 if __name__ == "__main__":
     limit = 3
     print("The most {} popular articles are:".format(limit))
-    result = "".join(OUTPUT1 % (title, view)
-                     for title, view in getMostPopularArticles(limit))
-    print(result)
+    for article in getMostPopularArticles(limit):
+        print("{} - {} views".format(article[0], article[1]))
 
     print("The most popular authors are:")
-    result = "".join(OUTPUT1 % (name, view)
-                     for name, view in getMostPopularAuthors())
-    print(result)
+    for author in getMostPopularAuthors():
+        print("{} - {} views".format(author[0], author[1]))
 
     percent = 1
-    print("The Days that {}% of requests that are errors:".format(percent))
-    result = "".join(OUTPUT2 % (date, error)
-                     for date, error in getDaysWithErrorPerCent(percent))
-    print(result)
+    print("The Days that {}% of requests are errors:".format(percent))
+    for error in getDaysWithErrorPerCent(percent):
+        print("{} - {:.2f}% errors".format(error[0], float(error[1])))
