@@ -19,9 +19,8 @@ What things do you need use the program
 4- Virtualbox
 
 5- Download the vagrant VM with all the files needed to init and enter into VM.
-Using this link to download: https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip
-
 ```
+[Link to Download](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
 ## Steps
 ```
 * Open the file above and extract all.
@@ -29,18 +28,16 @@ Using this link to download: https://d17h27t6h515a5.cloudfront.net/topher/2016/A
 * You need to init the VM using "vagrant up" where the "Vagrantfile" is localized.
 * Do ssh connection with virtual machine using "vagrant ssh" to enter inside the VM after started the VM.
 * Type "psql news" on terminal to open the "news" table on PostgreSQL. 
-* Exec this query:
- * create view get_error as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
-      from log where log.status like '%404%' group by date;
- * create view get_all as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req 
-      from log group by date;"
+* Exec the query's on below this steps.
+* Clone this repository inside VM.
 * Exec the irt.py after all to using the command line: "python irt.py" and wait some seconds for the result.
 ```
 
 ## Views
 ```
-    get_error
-    get_all
+    create view get_error as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req from log where log.status like '%404%' group by date;
+
+    create view get_all as select TO_CHAR(log.time :: DATE, 'Mon dd, yyyy') as date, count(*) as req from log group by date;"
 ```
 
 ## How to Contribute
