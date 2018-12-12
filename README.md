@@ -19,6 +19,8 @@ What things do you need use the program
 4- Virtualbox
 
 5- Download the vagrant VM with all the files needed to init and enter into VM.
+
+6- Install psycopg2 library python inside Vagrant VM to do postgres database operations. 
 ```
 [Link to Download](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
 ## Steps
