@@ -1,5 +1,5 @@
 # Projetct 3 Full Stack Web Developer Nanodegree from Udacity
-This repository is used to implement the third project from Udacity Full Stack Development nanodegree. In the project it is needed response 3 questions using sql query.
+This repository is used to implement the third project from Udacity Full Stack Development nanodegree. This project responses three questions using sql query using python psycopg2 module to connect to database and executes the queries. 
 
 ## Getting Started
 
